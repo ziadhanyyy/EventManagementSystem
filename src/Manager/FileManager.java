@@ -86,8 +86,8 @@ public class FileManager {
             System.err.println("Error saving registrations data: " + e.getMessage());
         }
     }
-// --- LOAD METHOD ---
-public static void loadAllData(EventManager manager) {
+    // --- LOAD METHOD ---
+    public static void loadAllData(EventManager manager) {
     System.out.println("Loading data from files...");
     loadPersons(manager);
     loadEvents(manager);
@@ -101,7 +101,7 @@ public static void loadAllData(EventManager manager) {
         try (Scanner fileScanner = new Scanner(new File(PERSONS_FILE))) {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
-                String[] parts = line.split("\\|"); // Use "\\|" to escape the pipe symbol
+                String[] parts = line.split("\\|");
 
                 if (parts.length >= 4) {
                     String role = parts[0];

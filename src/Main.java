@@ -60,7 +60,7 @@ public class Main {
             System.out.println("4. Register a Person in Event");
             System.out.println("5. Create Attendee");
             System.out.println("6. Create Speaker");
-          //  System.out.println("7. View Reports");
+            System.out.println("7. View Reports");
             System.out.println("8. Search Event ");
             System.out.println("9. Search Session");
             System.out.println("0. Logout");
@@ -169,6 +169,12 @@ public class Main {
                     manager.addPerson(new Speaker(SId, SName, SEmail,filed));
                     System.out.println("Speaker added.");
                     break;
+                case"7":
+                    System.out.println("We Have "+manager.getEvents().size()+" Events ");
+                    System.out.println(" with a "+manager.getSpeakerSize()+" Speakers ");
+                    System.out.println("and a "+manager.getAttendeeSize()+" Attendees ");
+                    System.out.println(" with a "+manager.getRegistrations().size()+" Registrations ");
+
                 case "8":
                     System.out.print("Enter Target Event ID: ");
                     String Eid = scanner.nextLine();

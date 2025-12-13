@@ -20,8 +20,27 @@ public class EventManager {
     public List<Event> getEvents() { return events; }
     public List<Person> getPeople() { return people; }
     public List<Registration> getRegistrations() { return registrations; }
-    public List<Session> getSessions() { return sessions; }
+    public List<Session> getSessions() { return this.sessions; }
+    public int getAttendeeSize(){
+        int result=0;
+        for(Person person : people){
+            if(person.getRole().equalsIgnoreCase("Attendee")){
+                result+=1;
+            }
+        }
+        return result;
 
+    }
+    public int getSpeakerSize(){
+        int result=0;
+        for(Person person : people){
+            if(person.getRole().equalsIgnoreCase("Speaker")){
+                result+=1;
+            }
+        }
+        return result;
+
+    }
     public void setEvents(List<Event> events) {
         this.events = events;
     }

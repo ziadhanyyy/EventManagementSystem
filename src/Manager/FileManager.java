@@ -4,10 +4,10 @@ import java.io.*;
 import java.util.Scanner;
 
 public class FileManager {
-    private static final String PERSONS_FILE = "D:\\EventManagementSystem\\Data\\people.txt";
-    private static final String EVENTS_FILE = "D:\\EventManagementSystem\\Data\\events.txt";
-    private static final String SESSIONS_FILE = "D:\\EventManagementSystem\\Data\\sessions.txt";
-    private static final String REGISTRATIONS_FILE = "D:\\EventManagementSystem\\Data\\registrations.txt";
+    private static final String PERSONS_FILE = "Data/people.txt";
+    private static final String EVENTS_FILE = "Data/events.txt";
+    private static final String SESSIONS_FILE = "Data/sessions.txt";
+    private static final String REGISTRATIONS_FILE = "Data/registrations.txt";
 
     // --- SAVE METHOD ---
     public static void saveAllData(EventManager manager) {

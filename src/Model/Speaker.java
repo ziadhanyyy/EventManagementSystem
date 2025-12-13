@@ -20,6 +20,6 @@ public class Speaker extends Person {
     }
     @Override
     public String toString() {
-        return  this.getRole()+" "+this.id+" "+this.name+" "+this.email +" "+this.field;
+        return "Role: "+ this.getRole()+" ID: "+this.id+" Name: "+this.name+"  Email: "+this.email +" Field: "+this.field;
     }
 }

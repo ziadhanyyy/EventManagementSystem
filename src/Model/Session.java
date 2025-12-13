@@ -6,13 +6,18 @@ public class Session {
     private String speakerId;
     private String timeSlot;
     private int capacity;
+    private String Hall;
 
-    public Session(String sessionId, String title, String speakerId, String timeSlot, int capacity) {
+    public Session(String sessionId, String title, String speakerId, String timeSlot, int capacity, String Hall) {
         this.sessionId = sessionId;
         this.title = title;
         this.speakerId = speakerId;
         this.timeSlot = timeSlot;
         this.capacity = capacity;
+        this.Hall = Hall;
+    }
+    public String getHall() {
+        return this.Hall;
     }
     public String getSessionId() { return this.sessionId; }
     public String getTitle() { return this.title; }
@@ -38,6 +43,9 @@ public class Session {
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
     }
+    public void setHall(String Hall) {
+        this.Hall = Hall;
+    }
     public String toString()
-    {   return  this.sessionId+" "+this.title+" "+this.speakerId+" "+this.timeSlot+" "+this.capacity;}
+    {   return "Id: "+ this.sessionId+" Title: "+this.title+" SpeakerId: "+this.speakerId+" Time: "+this.timeSlot+" capacity: "+this.capacity+" Hall: "+this.Hall;}
 }

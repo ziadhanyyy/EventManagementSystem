@@ -65,9 +65,9 @@ public class FileManager {
                 String eventId = e.getEventId();
                 for (Session s : e.getSessions()) {
                     // sessionId|eventId|title|speakerId|timeSlot|capacity
-                    writer.printf("%s|%s|%s|%s|%s|%d\n",
+                    writer.printf("%s|%s|%s|%s|%s|%d|%s\n",
                             s.getSessionId(), eventId, s.getTitle(), s.getSpeakerId(),
-                            s.getTimeSlot(), s.getCapacity());
+                            s.getTimeSlot(), s.getCapacity(),s.getHall());
                 }
             }
         } catch (IOException e) {
@@ -150,11 +150,11 @@ public class FileManager {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
                 String[] parts = line.split("\\|");
-                if (parts.length == 6) {
+                if (parts.length == 7) {
                     String eventId = parts[1]; // Get the eventId to link the session
 
                     // sessionId|eventId|title|speakerId|timeSlot|capacity
-                    Session s = new Session(parts[0], parts[2], parts[3], parts[4], Integer.parseInt(parts[5]));
+                    Session s = new Session(parts[0], parts[2], parts[3], parts[4], Integer.parseInt(parts[5]), parts[6]);
                     manager.addSessionToEvent(eventId, s); // Add session to the correct event
                 }
             }

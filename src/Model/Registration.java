@@ -37,6 +37,6 @@ public class Registration {
 
     @Override
     public String toString() {
-        return   registrationId  + " " + attendeeId + " " + sessionId ;
+        return  "RegistrationId: " +registrationId  + " AttendeeID: " + attendeeId + " SessionID: " + sessionId ;
     }
 }

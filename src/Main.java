@@ -39,7 +39,6 @@ public class Main {
                 String role = currentUser.getRole();
 
                 if (role.equals("Organizer")) {
-
                     showOrganizerMenu();
                 } else if (role.equals("Attendee")) {
                     showAttendeeMenu();
@@ -57,12 +56,11 @@ public class Main {
             System.out.println("1. Create Event");
             System.out.println("2. Add Session to Event");
             System.out.println("3. List All Events  and Sessions");
-            System.out.println("4. Register a Person in Event");
-            System.out.println("5. Create Attendee");
-            System.out.println("6. Create Speaker");
-            System.out.println("7. View Reports");
-            System.out.println("8. Search Event ");
-            System.out.println("9. Search Session");
+            System.out.println("4. Create Attendee");
+            System.out.println("5. Create Speaker");
+            System.out.println("6. View Reports");
+            System.out.println("7. Search Event ");
+            System.out.println("8. Search Session");
             System.out.println("0. Logout");
             System.out.print("Select: ");
 
@@ -74,12 +72,23 @@ public class Main {
                 case "1":
                     System.out.print("Enter Event ID: ");
                     String eId = scanner.nextLine();
+                    if(manager.findEvent(eId) != null) {
+                        System.out.println("Event already exists");
+                        break;
+                    }
                     System.out.print("Enter Name: ");
                     String name = scanner.nextLine();
                     System.out.print("Enter Date: ");
                     String date = scanner.nextLine();
                     System.out.print("Enter Location: ");
                     String loc = scanner.nextLine();
+                    for(Event e : manager.getEvents()) {
+                        if(e.getDate().equalsIgnoreCase(date) && e.getLocation().equalsIgnoreCase(loc)) {
+                            System.out.println("this location are taken in this day");
+                            break;
+                        }
+                    }
+
                     manager.addEvent(new Event(eId, name, date, loc));
                     System.out.println("Event Created.");
                     break;
@@ -87,14 +96,37 @@ public class Main {
                 case "2":
                     System.out.print("Enter Target Event ID: ");
                     String targetEid = scanner.nextLine();
+                    if(manager.findEvent(targetEid) == null) {
+                        System.out.println("Event not found.");
+                        break;
+                    }
                     System.out.print("Enter New Session ID: ");
                     String sId = scanner.nextLine();
+                    if(manager.findSession(sId) != null) {
+                        System.out.println("Session already exists.");
+                        break;
+                    }
                     System.out.print("Enter Title: ");
                     String title = scanner.nextLine();
                     System.out.print("Enter Speaker ID: ");
                     String spId = scanner.nextLine();
+                    Person speaker = manager.FindPerson(spId);
+
+                    if (speaker == null || !speaker.getRole().equalsIgnoreCase("Speaker")) {
+                        System.out.println("Speaker ID not found.");
+                        break;
+                    }
+                    System.out.print("Enter Hall Name : ");
+                    String hall = scanner.nextLine();
                     System.out.print("Enter Time : ");
                     String time = scanner.nextLine();
+                     List<Session> se=manager.getSessionsOfEvent(targetEid);
+                     for( Session s:se){
+                         if(s.getHall().equalsIgnoreCase(hall) && s.getTimeSlot().equalsIgnoreCase(time)) {
+                             System.out.println("Hall is taken in this time");
+                             break;
+                         }
+                     }
                     int cap;
                     while (true) {
                         System.out.print("Enter Capacity: ");
@@ -107,17 +139,11 @@ public class Main {
                             System.out.println("Invalid number. Please enter a valid integer.");
                         }
                     }
-                    Person speaker = manager.FindPerson(spId);
-
-                    if (speaker == null || !speaker.getRole().equalsIgnoreCase("Speaker")) {
-                        System.out.println("Speaker ID not found.");
-                        break;
-                    }
 
                     // =======================
                     // CREATE SESSION
                     // =======================
-                    Session session = new Session(sId, title, spId, time, cap);
+                    Session session = new Session(sId, title, spId, time, cap, hall);
                     boolean added = manager.addSessionToEvent(targetEid, session);
 
                     if (added) {
@@ -126,30 +152,17 @@ public class Main {
                         System.out.println("Event not found.");
                     }
                     break;
-
-
                 case "3":
                     printAllEvents();
                     break;
-
                 case "4":
-                    // Organizer can register anyone
-                    System.out.print("Enter Attendee ID: ");
-                    String aId = scanner.nextLine();
-                    System.out.print("Enter Session ID: ");
-                    String sessId = scanner.nextLine();
-                    boolean validAttendee=manager.FindPerson(aId) != null && manager.FindPerson(aId).getRole().equals("Attendee");
-                    boolean validSession=manager.findSession(sessId) != null;
-                    if (validAttendee && validSession) {
-                        System.out.println(manager.registerAttendee(aId, sessId));
-                    }
-                    else {
-                        System.out.println("Attendee  or Session ID not found");}
-
-                    break;
-                case "5":
                     System.out.println("Enter Attendee ID: ");
                     String AId=scanner.nextLine();
+                    for(Person a: manager.getPeople()){
+                        if(AId.equalsIgnoreCase(a.getId())) {
+                            System.out.println("this person already exists.");
+                        }
+                    }
                     System.out.print("Enter Attendee Name: ");
                     String AName=scanner.nextLine();
                     System.out.print("Enter Attendee Email: ");
@@ -157,9 +170,15 @@ public class Main {
                     manager.addPerson(new Attendee(AId, AName, AEmail));
                     System.out.println("Attendee added.");
                     break;
-                case "6":
+                case "5":
                     System.out.println("Enter Speaker ID: ");
                     String SId=scanner.nextLine();
+                    for(Person a: manager.getPeople()){
+                        if(SId.equalsIgnoreCase(a.getId())) {
+                            System.out.println("this person already exists.");
+                        }
+                    }
+
                     System.out.print("Enter Speaker Name: ");
                     String SName=scanner.nextLine();
                     System.out.print("Enter Speaker Email: ");
@@ -169,13 +188,14 @@ public class Main {
                     manager.addPerson(new Speaker(SId, SName, SEmail,filed));
                     System.out.println("Speaker added.");
                     break;
-                case"7":
+                case"6":
                     System.out.println("We Have "+manager.getEvents().size()+" Events ");
                     System.out.println(" with a "+manager.getSpeakerSize()+" Speakers ");
                     System.out.println("and a "+manager.getAttendeeSize()+" Attendees ");
                     System.out.println(" with a "+manager.getRegistrations().size()+" Registrations ");
+                    break;
 
-                case "8":
+                case "7":
                     System.out.print("Enter Target Event ID: ");
                     String Eid = scanner.nextLine();
                     if(manager.findEvent(Eid) != null){
@@ -184,7 +204,7 @@ public class Main {
                     else{
                         System.out.println("Event not found.");}
                     break;
-                case"9":
+                case"8":
                     System.out.print("Enter Session ID: ");
                     String Sid = scanner.nextLine();
                     if(manager.findSession(Sid) != null){
@@ -226,6 +246,11 @@ public class Main {
                     if(manager.findSession(sId) == null){
                         System.out.println("Session not found.");
                         break;
+                    }
+                    for(Registration r: manager.getRegistrations()){
+                        if(r.getSessionId().equalsIgnoreCase(sId)&& r.getAttendeeId().equalsIgnoreCase(currentUser.getId())){
+                            System.out.println("You are already registered for this Session.");
+                        }
                     }
                     // Pass the ID of the currently logged-in user
                     String result = manager.registerAttendee(currentUser.getId(), sId);

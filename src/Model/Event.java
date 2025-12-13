@@ -51,7 +51,7 @@ public class Event {
         this.eventId = eventId;
     }
     public String toString() {
-        return  this.eventId + " " + this.name +" " + date + " " + location;
+        return "EventId: " +this.eventId + " EventName: " + this.name +" Date: " + date + " Location: " + location;
     }
 
 }

@@ -1,4 +1,4 @@
-SESS1|E001|Advanced OOP Principles|S001|10:00-11:00|2
-SESS2|E001|Data Structures in Java|S001|11:30-12:30|2
-33|E001|33|S001|33|33
-SESS3|E002|Modern Web Design Trends|S002|10:00-11:00|1
+SESS1|E001|Advanced OOP Principles|S001|10:00-11:00|2|big
+SESS2|E001|Data Structures in Java|S001|11:30-12:30|2|big
+33|E001|33|S001|33|33|big
+SESS3|E002|Modern Web Design Trends|S002|10:00-11:00|1|small

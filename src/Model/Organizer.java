@@ -10,6 +10,6 @@ public class Organizer extends Person{
     }
     @Override
     public String toString() {
-        return  this.getRole()+" "+this.id+" "+this.name+" "+this.email ;
+        return   "Role: " + this.getRole()+" Id: "+this.id+" Name: "+this.name+" email: "+this.email;
     }
 }

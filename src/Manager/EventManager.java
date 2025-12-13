@@ -171,6 +171,7 @@ public class EventManager {
         }
         return schedule;
     }
+
     public List<Session> getAttendeeSessions(String attendeeId) {
         for (Registration r : registrations) {
             if (r.getAttendeeId().equalsIgnoreCase(attendeeId)) {
@@ -199,6 +200,17 @@ public class EventManager {
             }
         }
         return speakerSchedule;
+    }
+    public List<Session>getSessionsOfEvent(String eventId) {
+        List<Session> sessions = new ArrayList<>();
+        for (Event e : events) {
+            if (e.getEventId().equalsIgnoreCase(eventId)) {
+                for (Session s : e.getSessions()) {
+                    sessions.add(s);
+                }
+            }
+        }
+        return sessions;
     }
 
 

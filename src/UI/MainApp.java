@@ -11,7 +11,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
-    private static EventManager manager = new EventManager();
+    private static final EventManager manager = new EventManager();
     private Person currentUser = null;
     private Stage primaryStage;
 
@@ -79,12 +79,20 @@ public class MainApp extends Application {
     private void showRoleBasedMenu() {
         String role = currentUser.getRole();
         
-        if (role.equals("Organizer")) {
-            showOrganizerMenu();
-        } else if (role.equals("Attendee")) {
-            showAttendeeMenu();
-        } else if (role.equals("Speaker")) {
-            showSpeakerMenu();
+        switch (role) {
+            case "Organizer":
+                showOrganizerMenu();
+                break;
+            case "Attendee":
+                showAttendeeMenu();
+                break;
+            case "Speaker":
+                showSpeakerMenu();
+                break;
+            default:
+                showAlert(Alert.AlertType.ERROR, "Error", "Unknown role: " + role);
+                showLoginScreen();
+                break;
         }
     }
 
@@ -399,8 +407,8 @@ public class MainApp extends Application {
                 String aId = attendeeIdField.getText().trim();
                 String sessId = sessionIdField.getText().trim();
 
-                boolean validAttendee = manager.FindPerson(aId) != null && 
-                                       manager.FindPerson(aId).getRole().equals("Attendee");
+                Person attendee = manager.FindPerson(aId);
+                boolean validAttendee = attendee != null && attendee.getRole().equals("Attendee");
                 boolean validSession = manager.findSession(sessId) != null;
 
                 if (validAttendee && validSession) {

@@ -213,6 +213,74 @@ public class EventManager {
         return sessions;
     }
 
+    /**
+     * Validates if a hall is available at the given time for a specific event
+     * @param eventId The event ID to check
+     * @param hall The hall name
+     * @param time The time slot
+     * @return true if hall is available, false if already taken
+     */
+    public boolean isHallAvailable(String eventId, String hall, String time) {
+        List<Session> sessions = getSessionsOfEvent(eventId);
+        for (Session s : sessions) {
+            if (s.getHall().equalsIgnoreCase(hall) && s.getTimeSlot().equalsIgnoreCase(time)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Validates if a speaker is available for a new session within the same event
+     * @param eventId The event ID where the session is being added
+     * @param speakerId The speaker ID to check
+     * @param time The time slot for the new session
+     * @return null if available, error message if conflict exists
+     */
+    public String validateSpeakerConflictInEvent(String eventId, String speakerId, String time) {
+        List<Session> sessions = getSessionsOfEvent(eventId);
+        for (Session s : sessions) {
+            if (s.getSpeakerId().equalsIgnoreCase(speakerId) && s.getTimeSlot().equalsIgnoreCase(time)) {
+                return "Error: Speaker is already scheduled for another session in this event at " + time;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Validates if a speaker is available across all events on the same date
+     * @param eventId The event ID where the session is being added
+     * @param speakerId The speaker ID to check
+     * @param time The time slot for the new session
+     * @return null if available, error message if conflict exists
+     */
+    public String validateSpeakerConflictAcrossEvents(String eventId, String speakerId, String time) {
+        Event targetEvent = findEvent(eventId);
+        if (targetEvent == null) {
+            return null;
+        }
+        
+        String eventDate = targetEvent.getDate();
+        
+        // Check all events on the same date
+        for (Event e : events) {
+            // Skip the target event (already checked in validateSpeakerConflictInEvent)
+            if (e.getEventId().equalsIgnoreCase(eventId)) {
+                continue;
+            }
+            
+            // Only check events on the same date
+            if (e.getDate().equalsIgnoreCase(eventDate)) {
+                for (Session s : e.getSessions()) {
+                    if (s.getSpeakerId().equalsIgnoreCase(speakerId) && s.getTimeSlot().equalsIgnoreCase(time)) {
+                        return "Error: Speaker is busy at this time in another event (" + e.getName() + ")";
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
 
 }
 

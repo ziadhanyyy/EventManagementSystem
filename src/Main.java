@@ -120,13 +120,27 @@ public class Main {
                     String hall = scanner.nextLine();
                     System.out.print("Enter Time : ");
                     String time = scanner.nextLine();
-                     List<Session> se=manager.getSessionsOfEvent(targetEid);
-                     for( Session s:se){
-                         if(s.getHall().equalsIgnoreCase(hall) && s.getTimeSlot().equalsIgnoreCase(time)) {
-                             System.out.println("Hall is taken in this time");
-                             break;
-                         }
-                     }
+                    
+                    // Validate hall availability
+                    if (!manager.isHallAvailable(targetEid, hall, time)) {
+                        System.out.println("Hall is taken in this time");
+                        break;
+                    }
+                    
+                    // Validate speaker conflict within the same event
+                    String conflictInEvent = manager.validateSpeakerConflictInEvent(targetEid, spId, time);
+                    if (conflictInEvent != null) {
+                        System.out.println(conflictInEvent);
+                        break;
+                    }
+                    
+                    // Validate speaker conflict across events on the same date
+                    String conflictAcrossEvents = manager.validateSpeakerConflictAcrossEvents(targetEid, spId, time);
+                    if (conflictAcrossEvents != null) {
+                        System.out.println(conflictAcrossEvents);
+                        break;
+                    }
+                    
                     int cap;
                     while (true) {
                         System.out.print("Enter Capacity: ");

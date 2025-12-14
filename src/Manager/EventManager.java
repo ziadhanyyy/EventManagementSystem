@@ -281,6 +281,35 @@ public class EventManager {
         return null;
     }
 
+    /**
+     * Validates if a location is available on a specific date
+     * @param date The date to check
+     * @param location The location to check
+     * @return null if available, error message if location is taken
+     */
+    public String validateLocationAvailability(String date, String location) {
+        for (Event e : events) {
+            if (e.getDate().equalsIgnoreCase(date) && e.getLocation().equalsIgnoreCase(location)) {
+                return "Error: This location is already taken on this day";
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Validates if a person ID already exists
+     * @param personId The person ID to check
+     * @return null if available, error message if ID already exists
+     */
+    public String validatePersonIdAvailability(String personId) {
+        for (Person p : people) {
+            if (p.getId().equalsIgnoreCase(personId)) {
+                return "Error: This person ID already exists";
+            }
+        }
+        return null;
+    }
+
 
 }
 

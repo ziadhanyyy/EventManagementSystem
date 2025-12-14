@@ -82,11 +82,12 @@ public class Main {
                     String date = scanner.nextLine();
                     System.out.print("Enter Location: ");
                     String loc = scanner.nextLine();
-                    for(Event e : manager.getEvents()) {
-                        if(e.getDate().equalsIgnoreCase(date) && e.getLocation().equalsIgnoreCase(loc)) {
-                            System.out.println("this location are taken in this day");
-                            break;
-                        }
+                    
+                    // Validate location availability on the date
+                    String locationConflict = manager.validateLocationAvailability(date, loc);
+                    if (locationConflict != null) {
+                        System.out.println(locationConflict);
+                        break;
                     }
 
                     manager.addEvent(new Event(eId, name, date, loc));
@@ -172,11 +173,14 @@ public class Main {
                 case "4":
                     System.out.println("Enter Attendee ID: ");
                     String AId=scanner.nextLine();
-                    for(Person a: manager.getPeople()){
-                        if(AId.equalsIgnoreCase(a.getId())) {
-                            System.out.println("this person already exists.");
-                        }
+                    
+                    // Validate person ID availability
+                    String attendeeIdConflict = manager.validatePersonIdAvailability(AId);
+                    if (attendeeIdConflict != null) {
+                        System.out.println(attendeeIdConflict);
+                        break;
                     }
+                    
                     System.out.print("Enter Attendee Name: ");
                     String AName=scanner.nextLine();
                     System.out.print("Enter Attendee Email: ");
@@ -187,10 +191,12 @@ public class Main {
                 case "5":
                     System.out.println("Enter Speaker ID: ");
                     String SId=scanner.nextLine();
-                    for(Person a: manager.getPeople()){
-                        if(SId.equalsIgnoreCase(a.getId())) {
-                            System.out.println("this person already exists.");
-                        }
+                    
+                    // Validate person ID availability
+                    String speakerIdConflict = manager.validatePersonIdAvailability(SId);
+                    if (speakerIdConflict != null) {
+                        System.out.println(speakerIdConflict);
+                        break;
                     }
 
                     System.out.print("Enter Speaker Name: ");

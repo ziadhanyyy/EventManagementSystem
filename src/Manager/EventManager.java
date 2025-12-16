@@ -9,18 +9,16 @@ public class EventManager {
     private List<Event> events;
     private List<Person> people;
     private List<Registration> registrations;
-    private List <Session> sessions;
 
     public EventManager() {
         this.events = new ArrayList<>();
         this.people = new ArrayList<>();
         this.registrations = new ArrayList<>();
-        this.sessions = new ArrayList<>();
+
     }
     public List<Event> getEvents() { return events; }
     public List<Person> getPeople() { return people; }
     public List<Registration> getRegistrations() { return registrations; }
-    public List<Session> getSessions() { return this.sessions; }
     public int getAttendeeSize(){
         int result=0;
         for(Person person : people){
@@ -86,7 +84,7 @@ public class EventManager {
         }
         return null;
     }
-    //adding data
+
     public void addPerson(Person p) {
         people.add(p);
     }
@@ -95,7 +93,7 @@ public class EventManager {
         events.add(e);
     }
 
-    // Find the event by ID, then add the session to it
+
     public boolean addSessionToEvent(String eventId, Session session) {
         Event e = findEvent(eventId);
         if (e != null) {
@@ -105,47 +103,50 @@ public class EventManager {
         return false;
     }
     public String registerAttendee(String attendeeId, String sessionId) {
-        // 1. Validate Attendee
+
         Person p = FindPerson(attendeeId);
         if (p == null) {
             return "Error: Attendee not found or invalid ID.";
         }
 
-        // 2. Validate Session
+
         Session s = findSession(sessionId);
         if (s == null) {
             return "Error: Session not found.";
         }
 
-        // 3. Check for Duplicates & Calculate Current Count
+
         int currentCount = 0;
         for (Registration r : registrations) {
-            // Count how many people are in this session
+
             if (r.getSessionId().equalsIgnoreCase(sessionId)) {
                 currentCount++;
             }
-            // Check if THIS attendee is already in THIS session
+
             if (r.getSessionId().equalsIgnoreCase(sessionId) && r.getAttendeeId().equalsIgnoreCase(attendeeId)) {
                 return "Error: You are already registered for this session.";
             }
         }
 
-        // 4. Check Capacity
+
         if (currentCount >= s.getCapacity()) {
             return "Error: Session is full.";
         }
-        //5 conflict check
-        List<Session> existingSessions = getAttendeeSessions(attendeeId);
+        String newDate = s.getDate();
         String newTime = s.getTimeSlot();
 
-        for (Session existingS : existingSessions) {
-            // We use simple string comparison for timeSlot, as per project rules
-            if (existingS.getTimeSlot().equals(newTime)) {
-                return "Error: Scheduling Conflict! You are already registered for '" +
-                        existingS.getTitle() + "' at " + newTime + ".";
-            }}
+        for (Registration r : registrations) {
+            if (r.getAttendeeId().equalsIgnoreCase(attendeeId)) {
+                Session existingSession = findSession(r.getSessionId());
+                if (existingSession != null) {
 
-
+                    if (existingSession.getDate().equalsIgnoreCase(newDate) &&
+                            existingSession.getTimeSlot().equalsIgnoreCase(newTime)) {
+                        return "Attendee already registered for another session at this time";
+                    }
+                }
+            }
+        }
             // 6. Success - Create Registration
         String regId = "R" + (registrations.size() + 1); // Simple ID generation
         Registration newReg = new Registration(regId, attendeeId, sessionId);
@@ -158,11 +159,9 @@ public class EventManager {
     public List<String> getMemberSchedule(String personId) {
         List<String> schedule = new ArrayList<>();
 
-        // 1. Find all registrations for this person
         for (Registration r : registrations) {
             if (r.getAttendeeId().equalsIgnoreCase(personId)) {
 
-                // 2. Find the session details
                 Session s = findSession(r.getSessionId());
                 if (s != null) {
                     schedule.add("Session: " + s.getTitle() + " | Time: " + s.getTimeSlot());
@@ -172,26 +171,12 @@ public class EventManager {
         return schedule;
     }
 
-    public List<Session> getAttendeeSessions(String attendeeId) {
-        for (Registration r : registrations) {
-            if (r.getAttendeeId().equalsIgnoreCase(attendeeId)) {
-                Session s = findSession(r.getSessionId());
-                if (s != null) {
-                    sessions.add(s);
-                }
-            }
-        }
-        return sessions;
-    }
     public List<String> getSpeakerSchedule(String speakerId) {
         List<String> speakerSchedule = new ArrayList<>();
 
-        // 1. Iterate through all events
-        for (Event event : events) {
-            // 2. Iterate through all sessions in that event
-            for (Session session : event.getSessions()) {
 
-                // 3. Check if this session belongs to the speaker
+        for (Event event : events) {
+            for (Session session : event.getSessions()) {
                 if (session.getSpeakerId().equalsIgnoreCase(speakerId)) {
                     speakerSchedule.add("Event: " + event.getName() +
                             " | Session: " + session.getTitle() +
@@ -212,6 +197,72 @@ public class EventManager {
         }
         return sessions;
     }
+    public String validateAndAddEvent(String eventId, String name, String date, String location) {
+    if (findEvent(eventId) != null) {
+        return "Event already exists";
+    }
+    for (Event e : events) {
+        if (e.getDate().equalsIgnoreCase(date) && e.getLocation().equalsIgnoreCase(location)) {
+            return "This location is taken on this date";
+        }
+    }
+
+
+    addEvent(new Event(eventId, name, date, location));
+    return null;
+}
+
+    public String validateAndAddSession(String eventId, String sessionId, String title,
+                                        String speakerId, String timeSlot, int capacity, String hall) {
+        Event event = findEvent(eventId);
+        if (event == null) {
+            return "Event not found.";
+        }
+        if (findSession(sessionId) != null) {
+            return "Session already exists.";
+        }
+        Person speaker = FindPerson(speakerId);
+        if (speaker == null || !speaker.getRole().equalsIgnoreCase("Speaker")) {
+            return "Speaker ID not found.";
+        }
+
+        List<Session> eventSessions = getSessionsOfEvent(eventId);
+        for (Session s : eventSessions) {
+            if (s.getHall().equalsIgnoreCase(hall) && s.getTimeSlot().equalsIgnoreCase(timeSlot)) {
+                return "Hall is taken at this time";
+            }
+        }
+
+        String sessionDate = event.getDate();
+        String speakerConflict = checkSpeakerConflict(speakerId, sessionDate, timeSlot);
+        if (speakerConflict != null) {
+            return speakerConflict;
+        }
+
+        Session session = new Session(sessionId, title, speakerId, timeSlot, capacity, hall, sessionDate);
+        addSessionToEvent(eventId, session);
+        return null;
+    }
+    private String checkSpeakerConflict(String speakerId, String date, String timeSlot) {
+        for (Event event : events) {
+            for (Session session : event.getSessions()) {
+                if (session.getSpeakerId().equalsIgnoreCase(speakerId) &&
+                        session.getDate().equalsIgnoreCase(date) &&
+                        session.getTimeSlot().equalsIgnoreCase(timeSlot)) {
+                    return "Speaker is not available - already assigned to another session at this time";
+                }
+            }
+        }
+        return null;
+    }
+    public String validateAndAddPerson(Person person) {
+        for (Person p : people) {
+            if (p.getId().equalsIgnoreCase(person.getId())) {
+                return "This person already exists.";
+            }
+        }
+        addPerson(person);
+        return null; }
 
 
 }

@@ -26,30 +26,27 @@ public class Event {
         return this.sessions;
     }
 
-    // Getters
     public String getEventId() { return this.eventId; }
     public String getName() { return this.name; }
     public String getDate() { return this.date; }
     public String getLocation() { return this.location; }
+
     public void setSessions(List<Session> sessions) {
         this.sessions = sessions;
     }
-
     public void setLocation(String location) {
         this.location = location;
     }
-
     public void setDate(String date) {
         this.date = date;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public void setEventId(String eventId) {
         this.eventId = eventId;
     }
+
     public String toString() {
         return "EventId: " +this.eventId + " EventName: " + this.name +" Date: " + date + " Location: " + location;
     }

@@ -7,14 +7,22 @@ public class Session {
     private String timeSlot;
     private int capacity;
     private String Hall;
+    private String Date;
 
-    public Session(String sessionId, String title, String speakerId, String timeSlot, int capacity, String Hall) {
+    public Session(String sessionId, String title, String speakerId, String timeSlot, int capacity, String Hall, String Date) {
         this.sessionId = sessionId;
         this.title = title;
         this.speakerId = speakerId;
         this.timeSlot = timeSlot;
         this.capacity = capacity;
         this.Hall = Hall;
+        this.Date = Date;
+    }
+    public String getDate() {
+        return Date;
+    }
+    public void setDate(String date) {
+        Date = date;
     }
     public String getHall() {
         return this.Hall;
@@ -47,5 +55,5 @@ public class Session {
         this.Hall = Hall;
     }
     public String toString()
-    {   return "Id: "+ this.sessionId+" Title: "+this.title+" SpeakerId: "+this.speakerId+" Time: "+this.timeSlot+" capacity: "+this.capacity+" Hall: "+this.Hall;}
+    {   return "Id: "+ this.sessionId+" Title: "+this.title+" SpeakerId: "+this.speakerId+" Time: "+this.timeSlot+" capacity: "+this.capacity+" Hall: "+this.Hall+" Date: "+this.Date;}
 }

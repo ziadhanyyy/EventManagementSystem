@@ -9,7 +9,7 @@ public class FileManager {
     private static final String SESSIONS_FILE = "D:\\EventManagementSystem\\Data\\sessions.txt";
     private static final String REGISTRATIONS_FILE = "D:\\EventManagementSystem\\Data\\registrations.txt";
 
-    // --- SAVE METHOD ---
+
     public static void saveAllData(EventManager manager) {
         System.out.println("Saving data to files...");
 
@@ -26,20 +26,16 @@ public class FileManager {
             for (Person p : manager.getPeople()) {
                 StringBuilder line = new StringBuilder();
 
-                // Common fields for all people
                 line.append(p.getRole()).append("|");
                 line.append(p.getId()).append("|");
                 line.append(p.getName()).append("|");
                 line.append(p.getEmail());
 
-                // Role-specific fields
                 if (p instanceof Speaker) {
                     Speaker s = (Speaker) p;
                     line.append("|").append(s.getField());
 
                 }
-                // Attendee and Organizer don't need extra fields in the file
-
                 writer.println(line.toString());
             }
         } catch (IOException e) {
@@ -64,10 +60,10 @@ public class FileManager {
             for (Event e : manager.getEvents()) {
                 String eventId = e.getEventId();
                 for (Session s : e.getSessions()) {
-                    // sessionId|eventId|title|speakerId|timeSlot|capacity
-                    writer.printf("%s|%s|%s|%s|%s|%d|%s\n",
+                    // sessionId|eventId|title|speakerId|timeSlot|capacity|date
+                    writer.printf("%s|%s|%s|%s|%s|%d|%s|%s\n",
                             s.getSessionId(), eventId, s.getTitle(), s.getSpeakerId(),
-                            s.getTimeSlot(), s.getCapacity(),s.getHall());
+                            s.getTimeSlot(), s.getCapacity(),s.getHall(),s.getDate());
                 }
             }
         } catch (IOException e) {
@@ -86,7 +82,7 @@ public class FileManager {
             System.err.println("Error saving registrations data: " + e.getMessage());
         }
     }
-    // --- LOAD METHOD ---
+
     public static void loadAllData(EventManager manager) {
     System.out.println("Loading data from files...");
     loadPersons(manager);
@@ -117,7 +113,6 @@ public class FileManager {
                             manager.addPerson(new Organizer(id, name, email));
                             break;
                         case "Speaker":
-                            // Speaker needs one additional fields
                             if (parts.length >= 5) {
                                 manager.addPerson(new Speaker(id, name, email, parts[4]));
                             }
@@ -150,12 +145,12 @@ public class FileManager {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
                 String[] parts = line.split("\\|");
-                if (parts.length == 7) {
-                    String eventId = parts[1]; // Get the eventId to link the session
+                if (parts.length == 8) {
+                    String eventId = parts[1];
 
                     // sessionId|eventId|title|speakerId|timeSlot|capacity
-                    Session s = new Session(parts[0], parts[2], parts[3], parts[4], Integer.parseInt(parts[5]), parts[6]);
-                    manager.addSessionToEvent(eventId, s); // Add session to the correct event
+                    Session s = new Session(parts[0], parts[2], parts[3], parts[4], Integer.parseInt(parts[5]), parts[6], parts[7]);
+                    manager.addSessionToEvent(eventId, s);
                 }
             }
         } catch (IOException e) {
@@ -171,7 +166,7 @@ public class FileManager {
                 if (parts.length == 3) {
                     // registrationId|attendeeId|sessionId
                     Registration r = new Registration(parts[0], parts[1], parts[2]);
-                    manager.getRegistrations().add(r); // Add registration directly to the list
+                    manager.getRegistrations().add(r);
                 }
             }
         } catch (IOException e) {

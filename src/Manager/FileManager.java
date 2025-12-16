@@ -64,10 +64,10 @@ public class FileManager {
             for (Event e : manager.getEvents()) {
                 String eventId = e.getEventId();
                 for (Session s : e.getSessions()) {
-                    // sessionId|eventId|title|speakerId|timeSlot|capacity
-                    writer.printf("%s|%s|%s|%s|%s|%d|%s\n",
+                    // sessionId|eventId|title|speakerId|timeSlot|capacity|hall|sessionDate
+                    writer.printf("%s|%s|%s|%s|%s|%d|%s|%s\n",
                             s.getSessionId(), eventId, s.getTitle(), s.getSpeakerId(),
-                            s.getTimeSlot(), s.getCapacity(),s.getHall());
+                            s.getTimeSlot(), s.getCapacity(),s.getHall(), s.getSessionDate());
                 }
             }
         } catch (IOException e) {
@@ -150,11 +150,12 @@ public class FileManager {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
                 String[] parts = line.split("\\|");
-                if (parts.length == 7) {
+                if (parts.length >= 7) {
                     String eventId = parts[1]; // Get the eventId to link the session
-
-                    // sessionId|eventId|title|speakerId|timeSlot|capacity
-                    Session s = new Session(parts[0], parts[2], parts[3], parts[4], Integer.parseInt(parts[5]), parts[6]);
+                    
+                    // sessionId|eventId|title|speakerId|timeSlot|capacity|hall|sessionDate(optional)
+                    String sessionDate = (parts.length >= 8) ? parts[7] : "";
+                    Session s = new Session(parts[0], parts[2], parts[3], parts[4], Integer.parseInt(parts[5]), parts[6], sessionDate);
                     manager.addSessionToEvent(eventId, s); // Add session to the correct event
                 }
             }

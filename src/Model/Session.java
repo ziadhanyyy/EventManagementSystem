@@ -53,5 +53,5 @@ public class Session {
         this.sessionDate = sessionDate;
     }
     public String toString()
-    {   return "Id: "+ this.sessionId+" Title: "+this.title+" SpeakerId: "+this.speakerId+" Time: "+this.timeSlot+" capacity: "+this.capacity+" Hall: "+this.Hall;}
+    {   return "Id: "+ this.sessionId+" Title: "+this.title+" SpeakerId: "+this.speakerId+" Time: "+this.timeSlot+" capacity: "+this.capacity+" Hall: "+this.Hall+" Date: "+this.sessionDate;}
 }

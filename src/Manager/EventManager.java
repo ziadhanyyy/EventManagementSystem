@@ -119,7 +119,7 @@ public class EventManager {
         // Check if location is already taken on this date
         for (Event e : events) {
             if (e.getDate().equalsIgnoreCase(date) && e.getLocation().equalsIgnoreCase(location)) {
-                return "this location are taken in this day";
+                return "this location is taken in this day";
             }
         }
         
@@ -154,7 +154,7 @@ public class EventManager {
         List<Session> eventSessions = getSessionsOfEvent(eventId);
         for (Session s : eventSessions) {
             if (s.getHall().equalsIgnoreCase(hall) && s.getTimeSlot().equalsIgnoreCase(timeSlot)) {
-                return "Hall is taken in this time";
+                return "Hall is taken at this time";
             }
         }
         

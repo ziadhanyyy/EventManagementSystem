@@ -2,5 +2,3 @@ Organizer|O001|Admin Alice|alice@ems.coms
 Speaker|S001|Dr. Jane Brown|jane@uni.edu|Data Analytics Firm
 Attendee|A001|John Doe|john@example.com
 Speaker|S002|ziad|ziad@gmail.com|backend
-Attendee|A002|ziad|ziad
-Speaker|S005|ziad|ziad|ziad

@@ -1,4 +1,2 @@
 E001|Tech Conference 2025|2025-06-01|Virtual
 E002|Annual Web Summit|2025-09-15|NYC Convention Center
-e003|test|test|test
-e003|test|test|test

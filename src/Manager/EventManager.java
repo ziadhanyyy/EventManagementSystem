@@ -279,17 +279,6 @@ public class EventManager {
         return schedule;
     }
 
-    public List<Session> getAttendeeSessions(String attendeeId) {
-        for (Registration r : registrations) {
-            if (r.getAttendeeId().equalsIgnoreCase(attendeeId)) {
-                Session s = findSession(r.getSessionId());
-                if (s != null) {
-                    sessions.add(s);
-                }
-            }
-        }
-        return sessions;
-    }
     public List<String> getSpeakerSchedule(String speakerId) {
         List<String> speakerSchedule = new ArrayList<>();
 

@@ -150,10 +150,10 @@ public class FileManager {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
                 String[] parts = line.split("\\|");
+                // Minimum 7 fields required: sessionId|eventId|title|speakerId|timeSlot|capacity|hall
+                // 8th field (sessionDate) is optional for backward compatibility
                 if (parts.length >= 7) {
                     String eventId = parts[1]; // Get the eventId to link the session
-                    
-                    // sessionId|eventId|title|speakerId|timeSlot|capacity|hall|sessionDate(optional)
                     String sessionDate = (parts.length >= 8) ? parts[7] : "";
                     Session s = new Session(parts[0], parts[2], parts[3], parts[4], Integer.parseInt(parts[5]), parts[6], sessionDate);
                     manager.addSessionToEvent(eventId, s); // Add session to the correct event

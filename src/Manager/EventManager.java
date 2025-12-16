@@ -119,7 +119,7 @@ public class EventManager {
         // Check if location is already taken on this date
         for (Event e : events) {
             if (e.getDate().equalsIgnoreCase(date) && e.getLocation().equalsIgnoreCase(location)) {
-                return "this location is taken in this day";
+                return "This location is taken on this date";
             }
         }
         
@@ -197,7 +197,7 @@ public class EventManager {
         // Check if person ID already exists
         for (Person p : people) {
             if (p.getId().equalsIgnoreCase(person.getId())) {
-                return "this person already exists.";
+                return "This person already exists.";
             }
         }
         

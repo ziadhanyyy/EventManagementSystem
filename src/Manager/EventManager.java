@@ -147,8 +147,7 @@ public class EventManager {
                 }
             }
         }
-            // 6. Success - Create Registration
-        String regId = "R" + (registrations.size() + 1); // Simple ID generation
+        String regId = "R" + (registrations.size() + 1);
         Registration newReg = new Registration(regId, attendeeId, sessionId);
         registrations.add(newReg);
 

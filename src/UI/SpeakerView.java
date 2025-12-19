@@ -66,7 +66,7 @@ public class SpeakerView {
         });
 
         layout.getChildren().addAll(header, refreshButton, scheduleDisplay);
-        refreshButton.fire(); // Load schedule on startup
+        refreshButton.fire();
         this.scene = new Scene(layout, 600, 400);
     }
 

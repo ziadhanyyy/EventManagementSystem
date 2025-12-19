@@ -11,14 +11,14 @@ public class FileManager {
 
 
     public static void saveAllData(EventManager manager) {
-        System.out.println("Saving data to files...");
+
 
         savePersons(manager);
         saveEvents(manager);
         saveSessions(manager);
         saveRegistrations(manager);
 
-        System.out.println("Data saved successfully.");
+
     }
 
     private static void savePersons(EventManager manager) {

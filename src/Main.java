@@ -3,7 +3,7 @@ import Model.*;
 import java.util.List;
 import java.util.Scanner;
 
-public class Main {
+public  class Main {
     private static EventManager manager = new EventManager();
     private static Scanner scanner = new Scanner(System.in);
     private static Person currentUser = null;

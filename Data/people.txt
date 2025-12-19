@@ -1,8 +1,8 @@
-Organizer|O001|Admin Alice|alice@ems.coms
-Speaker|S001|Dr. Jane Brown|jane@uni.edu|Data Analytics Firm
-Attendee|A001|John Doe|john@example.com
-Speaker|S002|ziad|ziad@gmail.com|backend
-Attendee|A002|ziad|ziad
-Speaker|S005|ziad|ziad|ziad
-Attendee|99|99|99
-Speaker|999|99|99|99
+Speaker|S001|Dr. Ahmed|speaker1@email.com|backend
+Speaker|S002|Dr. Sara|speaker2@email.com|ai
+Speaker|S003|Dr. Omar|speaker3@email.com|frontend
+Attendee|A001|Ziad|ziad@email.com
+Attendee|A002|Ali|ali@email.com
+Attendee|A003|Mona|mona@email.com
+Organizer|O001|Admin User|admin@email.com
+Speaker|123|czxc|sdsfds|klajflksdjfdslkflds

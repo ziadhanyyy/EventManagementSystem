@@ -52,7 +52,7 @@ public class EventManagementApp extends Application implements LogoutHandler {
             System.out.println("Data loaded from files.");
         } catch (Exception e) {
             System.err.println("File Manager not found or failed to load data. Starting with empty system.");
-            // No demo data will be loaded - start with empty system
+
         }
     }
 
@@ -144,13 +144,13 @@ public class EventManagementApp extends Application implements LogoutHandler {
 
     private void applyStylesheet(Scene scene) {
         try {
-            // Try to load from classpath (for packaged applications)
+
             String stylesheet = getClass().getResource("/styles.css").toExternalForm();
             scene.getStylesheets().add(stylesheet);
             System.out.println("CSS loaded successfully from classpath");
         } catch (Exception e) {
             try {
-                // Try to load from file system (for development)
+
                 String stylesheet = getClass().getResource("styles.css").toExternalForm();
                 scene.getStylesheets().add(stylesheet);
                 System.out.println("CSS loaded successfully from file system");

@@ -18,6 +18,7 @@ public class Speaker extends Person {
     public String getRole() {
         return "Speaker";
     }
+
     @Override
     public String toString() {
         return "Role: "+ this.getRole()+" ID: "+this.id+" Name: "+this.name+"  Email: "+this.email +" Field: "+this.field;

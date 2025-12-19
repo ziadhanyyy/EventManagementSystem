@@ -18,7 +18,7 @@ public class OrganizerView {
     private EventManager manager;
     private Person currentUser;
     private Scene scene;
-    private LogoutHandler logoutHandler; // Use interface
+    private LogoutHandler logoutHandler;
 
     public OrganizerView(Stage primaryStage, EventManager manager, Person currentUser, LogoutHandler logoutHandler) {
         this.primaryStage = primaryStage;
@@ -153,7 +153,7 @@ public class OrganizerView {
             String attendeeId = attendeeIdField.getText();
             String sessionId = sessionIdField.getText();
 
-            // 1. Basic Check (mimicking the CLI)
+
             boolean validAttendee = manager.FindPerson(attendeeId) != null && manager.FindPerson(attendeeId).getRole().equals("Attendee");
             boolean validSession = manager.findSession(sessionId) != null;
 
@@ -197,7 +197,7 @@ public class OrganizerView {
             sb.append("Total Attendees: ").append(manager.getAttendeeSize()).append("\n");
             sb.append("Total Speakers: ").append(manager.getSpeakerSize()).append("\n");
             sb.append("Total Registrations: ").append(manager.getRegistrations().size()).append("\n\n");
-            sb.append("--- CURRENT CAPACITY USAGE ---\n");
+
 
             for (Event event : manager.getEvents()) {
                 for (Session session : event.getSessions()) {
@@ -207,8 +207,7 @@ public class OrganizerView {
                             registeredCount++;
                         }
                     }
-                    sb.append(String.format("Event %s | Session %s: %d/%d capacity\n",
-                            event.getEventId(), session.getSessionId(), registeredCount, session.getCapacity()));
+
                 }
             }
             reportArea.setText(sb.toString());
@@ -238,9 +237,13 @@ public class OrganizerView {
                         dateField.getText(),
                         locationField.getText()
                 );
-                manager.addEvent(newEvent);
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Event '" + newEvent.getName() + "' created successfully!");
-                eventIdField.clear(); nameField.clear(); dateField.clear(); locationField.clear();
+                String error = manager.validateAndAddEvent(eventIdField.getText(), nameField.getText(),
+                        dateField.getText(), locationField.getText());
+                if (error != null) {
+                    showAlert(Alert.AlertType.ERROR, "Error", error);
+                } else {
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "Event created!");
+                }
             } catch (Exception ex) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Could not create event. Check inputs.");
             }
@@ -257,27 +260,24 @@ public class OrganizerView {
         TextField speakerIdField = addGridRow(grid, "Speaker ID (e.g., S1):", 3);
         TextField timeSlotField = addGridRow(grid, "Time Slot (e.g., 10:00-11:00):", 4);
         TextField capacityField = addGridRow(grid, "Capacity:", 5);
-        TextField hallField = addGridRow(grid, "Hall Name:", 6); // ADD THIS
+        TextField hallField = addGridRow(grid, "Hall Name:", 6);
 
         Button addButton = new Button("Add Session");
-        grid.add(addButton, 1, 7); // Update row to 7
+        grid.add(addButton, 1, 7);
 
         addButton.setOnAction(e -> {
             try {
                 int capacity = Integer.parseInt(capacityField.getText());
 
-                // Fix: Add the eventIdField.getText() as the last parameter
-                Session newSession = new Session(sessionIdField.getText(), titleField.getText(),
-                        speakerIdField.getText(), timeSlotField.getText(),
-                        capacity, hallField.getText(), manager.findEvent(eventIdField.getText()).getDate());
-                boolean success = manager.addSessionToEvent(eventIdField.getText(), newSession);
-                if (success) {
-                    showAlert(Alert.AlertType.INFORMATION, "Success", "Session '" + newSession.getTitle() + "' added to event " + eventIdField.getText());
-                    sessionIdField.clear(); titleField.clear(); speakerIdField.clear();
-                    timeSlotField.clear(); capacityField.clear(); hallField.clear(); // Clear hall too
+                String error = manager.validateAndAddSession(eventIdField.getText(), sessionIdField.getText(),
+                        titleField.getText(), speakerIdField.getText(), timeSlotField.getText(),
+                        capacity, hallField.getText());
+                if (error != null) {
+                    showAlert(Alert. AlertType.ERROR, "Error", error);
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Event ID '" + eventIdField.getText() + "' not found.");
+                    showAlert(Alert.AlertType. INFORMATION, "Success", "Session added!");
                 }
+
             } catch (NumberFormatException ex) {
                 showAlert(Alert.AlertType.ERROR, "Input Error", "Capacity must be a valid number.");
             } catch (Exception ex) {
@@ -318,7 +318,6 @@ public class OrganizerView {
                     }
                 }
             } else {
-                // Search Event by ID (Option 8)
                 Event eFound = manager.findEvent(query);
                 if (eFound != null) {
                     sb.append("--- FOUND EVENT ---\n");
@@ -352,7 +351,7 @@ public class OrganizerView {
         return new Tab("View/Search Data", layout);
     }
 
-    // --- Utility Methods ---
+
     private GridPane createInputGrid() {
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20));

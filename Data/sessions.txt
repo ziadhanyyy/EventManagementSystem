@@ -1,6 +1,5 @@
-SESS1|E001|Advanced OOP Principles|S001|10:00-11:00|2|big|2025-06-01
-se00001|E001|test|s005|9|5|5555|2025-06-01
-se005|E003|test|s002|5|5|test|test
-|E003|se006|s002|test|2||test
-SESS2|E002|Data Structures in Java|S002|10:00-11:00|2|big|2025-06-01
-SESS3|E002|Modern Web Design Trends|S002|10:00-11:00|1|small|2025-09-15
+SESS1|E001|Advanced OOP Principles|S001|10:00-11:00|2|RoomA|2025-06-01
+SESS2|E001|Java Basics|S002|10:00-11:00|1|RoomB|2025-06-01
+dfsdfsd|E001|kljfsdklfj|s001|10-11|22|jklsdfjsdkl|2025-06-01
+SESS3|E002|Data Structures|S001|14:00-15:00|3|RoomA|2025-06-01
+SESS4|E003|Morning Workshop|S003|10:00-11:00|2|RoomA|2025-06-02
